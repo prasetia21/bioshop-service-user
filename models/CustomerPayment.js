@@ -1,42 +1,22 @@
 module.exports = (sequelize, DataTypes) => {
-    const User = sequelize.define('User', {
+    const CustomersPayment = sequelize.define('CustomersPayment', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
             allowNull: false,
         }, 
-        username: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        password: {
-            type: DataTypes.STRING,
-            allowNull: false,
-        },
-        role: {
-            type: DataTypes.ENUM,
-            values: ["admin", "user"],
-            allowNull: false,
-            defaultValue: "user",
-        },
-        email: {
-            type: DataTypes.STRING,
-            allowNull: false,
-            unique: true,
-        },
-        phone: {
+        customers_id: {
             type: DataTypes.INTEGER,
             allowNull: false,
         },
-        avatar: {
+        payment_type: {
             type: DataTypes.STRING,
-            allowNull: true,
+            allowNull: false,
         },
-        lastLogin: {
-            type: DataTypes.DATE,
-            field: 'last_login',
-            allowNull: true,
+        provider: {
+            type: DataTypes.STRING,
+            allowNull: false,
         },
         createdAt: {
             type: DataTypes.DATE,
@@ -49,9 +29,9 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         }
     }, {
-        tableName: 'users',
+        tableName: 'customers_payment',
         timestamps: true
     });
-    return User;
+    return CustomersPayment;
 }
 

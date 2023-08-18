@@ -1,15 +1,21 @@
-"use strict";
-
-const { UniqueConstraintError } = require("sequelize");
+'use strict';
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("users", {
+  async up (queryInterface, Sequelize) {
+     await queryInterface.createTable("customers", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
         autoIncrement: true,
+        allowNull: false,
+      },
+      first_name: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      last_name: {
+        type: Sequelize.STRING,
         allowNull: false,
       },
       username: {
@@ -18,11 +24,6 @@ module.exports = {
       },
       password: {
         type: Sequelize.STRING,
-        allowNull: false,
-      },
-      role: {
-        type: Sequelize.ENUM,
-        values: ["admin", "user"],
         allowNull: false,
       },
       email: {
@@ -50,15 +51,14 @@ module.exports = {
         allowNull: false,
       },
     });
-    
-    await queryInterface.addConstraint("users", {
+    await queryInterface.addConstraint("customers", {
       type: "unique",
       fields: ["email"],
-      name: "UNIQUE_USERS_EMAIL",
+      name: "UNIQUE_CUSTOMERS_EMAIL",
     });
   },
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("users");
-  },
+  async down (queryInterface, Sequelize) {
+     await queryInterface.dropTable("customers");
+  }
 };

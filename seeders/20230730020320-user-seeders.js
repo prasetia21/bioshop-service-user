@@ -5,22 +5,12 @@ const bcrypt = require("bcrypt");
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
   async up(queryInterface, Sequelize) {
-    /**
-     * Add seed commands here.
-     *
-     * Example:
-     * await queryInterface.bulkInsert('users', [{
-     *   name: 'John Doe',
-     *   isBetaMember: false
-     * }], {});
-     */
-
     await queryInterface.bulkInsert(
       "users",
       [
         {
-          name: "John Doe",
-          profession: "Admin Micro",
+          username: "John Doe",
+          phone: 087734855511,
           role: "admin",
           email: "admin@micro.com",
           password: await bcrypt.hash("12345678", 10),
@@ -28,9 +18,9 @@ module.exports = {
           updated_at: new Date(),
         },
         {
-          name: "student",
-          profession: "Student Micro",
-          role: "student",
+          username: "user",
+          phone: 087734855511,
+          role: "user",
           email: "student@micro.com",
           password: await bcrypt.hash("12345678", 10),
           created_at: new Date(),

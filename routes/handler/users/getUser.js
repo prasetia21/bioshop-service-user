@@ -6,7 +6,7 @@ module.exports = async (req, res) => {
 
     // cari data id user dan tambahkan attribut untuk memfilter data yang akan dikirim dan ditampilkan 
     const user = await User.findByPk(id, {
-        attributes: ["id", "name", "email", "role", "profession", "avatar"]
+        attributes: ["id", "username", "email", "role", "phone", "avatar", "last_login"]
     });
 
     // cek apakah user ada

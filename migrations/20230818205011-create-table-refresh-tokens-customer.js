@@ -1,9 +1,9 @@
-"use strict";
+'use strict';
 
 /** @type {import('sequelize-cli').Migration} */
 module.exports = {
-  async up(queryInterface, Sequelize) {
-    await queryInterface.createTable("refresh_tokens", {
+  async up (queryInterface, Sequelize) {
+    await queryInterface.createTable("refresh_tokens_customer", {
       id: {
         type: Sequelize.INTEGER,
         primaryKey: true,
@@ -14,7 +14,7 @@ module.exports = {
         type: Sequelize.TEXT,
         allowNull: false,
       },
-      user_id: {
+      customer_id: {
         type: Sequelize.INTEGER,
         allowNull: false,
       },
@@ -28,18 +28,18 @@ module.exports = {
       },
     });
 
-    await queryInterface.addConstraint("refresh_tokens", {
+    await queryInterface.addConstraint("refresh_tokens_customer", {
       type: "foreign key",
-      fields: ["user_id"],
-      name: "REFRESH_TOKENS_USER_ID",
+      fields: ["customer_id"],
+      name: "REFRESH_TOKENS_CUSTOMER_ID",
       references: {
-        table: "users",
+        table: "customers",
         field: "id"
       }
     });
   },
 
-  async down(queryInterface, Sequelize) {
-    await queryInterface.dropTable("refresh_tokens");
-  },
+  async down (queryInterface, Sequelize) {
+    await queryInterface.dropTable('refresh_tokens_customer');
+  }
 };

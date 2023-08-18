@@ -1,12 +1,14 @@
 const bcrypt = require("bcrypt");
 const Validator = require("fastest-validator");
-const { User } = require("../../../models");
+const { Customer } = require("../../../models");
 
 const v = new Validator();
 
 module.exports = async (req, res) => {
-    // validasi inputan user
+    // validasi inputan Customer
     const schema = {
+        first_name: "string|empty:false",
+        last_name: "string|empty:false",
         username: "string|empty:false",
         email: "email|empty:false",
         password: "string|min:6",
@@ -23,13 +25,26 @@ module.exports = async (req, res) => {
         });
     }
 
-    // cari email user
-    const user = await User.findOne({
+    // cari username Customer
+    const customerUserName = await Customer.findOne({
+        where: { username: req.body.username }
+    });
+
+    // cek dan berikan respon apakah ada duplikat data email
+    if (customerUserName) {
+        return res.status(409).json({
+            status: "error",
+            message: "username already exist",
+        });
+    }
+
+    // cari email Customer
+    const customerEmail = await Customer.findOne({
         where: { email: req.body.email }
     });
 
     // cek dan berikan respon apakah ada duplikat data email
-    if (user) {
+    if (customerEmail) {
         return res.status(409).json({
             status: "error",
             message: "email already exist",
@@ -42,19 +57,20 @@ module.exports = async (req, res) => {
     // simpan data
     const data = {
         password,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
         username: req.body.username,
         email: req.body.email,
         phone: req.body.phone,
-        role: "user"
     };
 
-    const createUser = await User.create(data);
+    const createCustomer = await Customer.create(data);
 
     // jika berhasil berikan respon
     return res.json({
         status: "success",
         data: {
-            id: createUser.id
+            id: createCustomer.id
         }
     });
 

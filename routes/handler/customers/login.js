@@ -1,6 +1,6 @@
 const bcrypt = require("bcrypt");
 const Validator = require("fastest-validator");
-const { User } = require("../../../models");
+const { Customer } = require("../../../models");
 
 const v = new Validator();
 
@@ -21,21 +21,21 @@ module.exports = async (req, res) => {
         });
     }
 
-    // cari email user
-    const user = await User.findOne({
+    // cari email customer
+    const customer = await Customer.findOne({
         where: { email: req.body.email }
     });
 
     // cek dan berikan respon apakah ada data email
-    if (!user) {
+    if (!customer) {
         return res.status(404).json({
             status: "error",
-            message: "user not found",
+            message: "customer not found",
         });
     }
 
     // cek password apakah sesuai
-    const isValidPassword = await bcrypt.compare(req.body.password, user.password);
+    const isValidPassword = await bcrypt.compare(req.body.password, customer.password);
     if (!isValidPassword) {
         return res.status(404).json({
             status: "error",
@@ -43,16 +43,16 @@ module.exports = async (req, res) => {
         });
     }
 
-    // jika berhasil berikan respon dan kirimkan data user
+    // jika berhasil berikan respon dan kirimkan data customer
     return res.json({
         status: "success",
         data: {
-            id: user.id,
-            username: user.username,
-            role: user.role,
-            email: user.email,
-            phone: user.phone,
-            avatar: user.avatar,
+            id: customer.id,
+            username: customer.username,
+            role: customer.role,
+            email: customer.email,
+            phone: customer.phone,
+            avatar: customer.avatar,
         }
     });
 

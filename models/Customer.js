@@ -1,11 +1,19 @@
 module.exports = (sequelize, DataTypes) => {
-    const User = sequelize.define('User', {
+    const Customer = sequelize.define('Customer', {
         id: {
             type: DataTypes.INTEGER,
             primaryKey: true,
             autoIncrement: true,
             allowNull: false,
         }, 
+        first_name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
+        last_name: {
+            type: DataTypes.STRING,
+            allowNull: false,
+        },
         username: {
             type: DataTypes.STRING,
             allowNull: false,
@@ -13,12 +21,6 @@ module.exports = (sequelize, DataTypes) => {
         password: {
             type: DataTypes.STRING,
             allowNull: false,
-        },
-        role: {
-            type: DataTypes.ENUM,
-            values: ["admin", "user"],
-            allowNull: false,
-            defaultValue: "user",
         },
         email: {
             type: DataTypes.STRING,
@@ -49,9 +51,9 @@ module.exports = (sequelize, DataTypes) => {
             allowNull: false,
         }
     }, {
-        tableName: 'users',
+        tableName: 'customers',
         timestamps: true
     });
-    return User;
+    return Customer;
 }
 

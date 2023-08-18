@@ -9,7 +9,7 @@ module.exports = async (req, res) => {
 
     // setup filter data yang akan dikirim / ditampilkan
     const sqlOptions = {
-        attributes: ["id", "name", "email", "role", "profession", "avatar"]
+        attributes: ["id", "username", "email", "role", "phone", "avatar", "last_login"]
     }
 
     // cek apakah ada user_ids yang diinput / didapat

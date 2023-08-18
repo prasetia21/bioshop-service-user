@@ -1,12 +1,14 @@
 const bcrypt = require("bcrypt");
 const Validator = require("fastest-validator");
-const { User } = require("../../../models");
+const { Customer } = require("../../../models");
 
 const v = new Validator();
 
 module.exports = async (req, res) => {
-  // validasi inputan user
+  // validasi inputan Customer
   const schema = {
+    first_name: "string|empty:false",
+    last_name: "string|empty:false",
     username: "string|empty:false",
     email: "email|empty:false",
     password: "string|min:6",
@@ -24,28 +26,28 @@ module.exports = async (req, res) => {
     });
   }
 
-  // cari id user
+  // cari id customer
   const id = req.params.id;
-  const user = await User.findByPk(id);
+  const customer = await Customer.findByPk(id);
 
   // cek dan berikan respon apakah ada data id
-  if (!user) {
+  if (!customer) {
     return res.status(404).json({
       status: "error",
-      message: "user not found",
+      message: "customer not found",
     });
   }
 
-  // cari email user
+  // cari email customer
   const email = req.body.email;
 
   // cek dan berikan respon apakah ada data id
   if (email) {
-    const checkEmail = await User.findOne({
+    const checkEmail = await Customer.findOne({
       where: { email },
     });
 
-    if (checkEmail && email !== user.email) {
+    if (checkEmail && email !== customer.email) {
       return res.status(409).json({
         status: "error",
         message: "email already exist",
@@ -57,9 +59,11 @@ module.exports = async (req, res) => {
   const password = await bcrypt.hash(req.body.password, 10);
 
   // simpan data
-  const { username, phone, avatar } = req.body;
+  const { username, first_name, last_name, phone, avatar } = req.body;
 
-  await user.update({
+  await customer.update({
+    first_name,
+    last_name,
     email,
     password,
     username,
@@ -72,6 +76,8 @@ module.exports = async (req, res) => {
     status: "success",
     data: {
       id: user.id,
+      first_name,
+      last_name,
       email,
       username,
       phone,

@@ -1,15 +1,15 @@
-const { User, RefreshToken } = require("../../../models");
+const { Customer, RefreshTokenCustomer } = require("../../../models");
 
 module.exports = async (req, res) => {
-  // cari id user
-  const userId = req.body.user_id;
-  const user = await User.findByPk(userId);
+  // cari id customer
+  const customerId = req.body.customer_id;
+  const customer = await Customer.findByPk(customerId);
 
   // cek dan berikan respon apakah ada data id
-  if (!user) {
+  if (!customer) {
     return res.status(404).json({
       status: "error",
-      message: "user not found",
+      message: "customer not found",
     });
   }
 
@@ -18,11 +18,11 @@ module.exports = async (req, res) => {
     last_login:new Date()
   };
 
-  const lastLogin = await User.create(data);
+  const lastLogin = await Customer.create(data);
   
   // hapus refresh token berdasarkan id
-  await RefreshToken.destroy({
-    where: { user_id: userId },
+  await RefreshTokenCustomer.destroy({
+    where: { customer_id: customerId },
   });
 
   
